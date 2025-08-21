@@ -1,0 +1,2 @@
+# SafeGames
+gaming platform
