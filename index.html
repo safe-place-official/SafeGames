@@ -101,20 +101,24 @@
             background-color: var(--black);
             padding: 10px 20px;
             position: fixed;
-            width: 100%;
             top: 0;
             z-index: 1000;
+            height: clamp(50px, 8vh, 70px);
             border: 0;
             border-left: 2px solid #702BFF;
             border-right: 2px solid #702BFF;
             border-bottom: 2px solid #702BFF;
             border-bottom-left-radius: 12px;
             border-bottom-right-radius: 12px;
+            width: 100%;
+            box-sizing: border-box; /* Добавьте это */
+            left: 0;
+            right: 0;
         }
 
-        .logo {
-            font-size: 24px;
-            color: var(--purple);
+        .sg-logo {
+            height: clamp(28px, 5vh, 40px);
+            width: auto;
         }
 
         /* Сайдбар */
@@ -697,7 +701,7 @@
             <i class="fas fa-chevron-right"></i>
         </button>
         <a href="https://www.safe-games.ru">
-            <img src="SafeGamesLogo.png" alt="SafeGames" class="logo">
+            <img class="sg-logo" src="SafeGamesLogo.png" alt="SafeGames">
         </a>
     </header>
 
