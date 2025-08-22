@@ -595,8 +595,11 @@
                 if (gameData.releaseDate) badges[0].innerHTML = `<i class="fa-solid fa-calendar-day"></i> Релиз: ${gameData.releaseDate}`;
                 else badges[0].style.display = 'none';
 
-                if (gameData.developer) badges[1].innerHTML = `<i class="fa-solid fa-user-gear"></i> Разработчик: ${gameData.developer}`;
-                else badges[1].style.display = 'none';
+                if (gameData.developer)
+                    badges[1].innerHTML = `<a href="../" class="badge">
+            <i class="fa-solid fa-user-gear"></i> Разработчик: ${gameData.developer}
+        </a>`;
+
 
                 if (gameData.rating)
                     badges[2].innerHTML = `<i class="fa-solid fa-star"></i> Рейтинг: <span class="stars">${'★'.repeat(Math.floor(gameData.rating))}${'☆'.repeat(5 - Math.floor(gameData.rating))}</span> ${gameData.rating}`;
