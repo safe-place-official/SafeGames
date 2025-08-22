@@ -24,13 +24,13 @@
         html, body {
             margin: 0;
             padding: 0;
-            background: var(--black);
             color: var(--white);
             font-family: 'Rubik', sans-serif;
             font-weight: 900;
             font-style: italic;
             height: 100%;
         }
+
 
         a {
             color: inherit;
@@ -195,7 +195,6 @@
             flex-wrap: wrap;
             gap: min(2vw, 15px);
             justify-content: flex-end;
-
         }
 
         .btn {
@@ -435,12 +434,12 @@
 
         #bg-canvas {
             position: fixed;
-            top: 0;
-            left: 0;
+            inset: 0;
             width: 100%;
             height: 100%;
-            pointer-events: none; /* чтобы не мешало кликам */
-            z-index: 0; /* позади контента */
+            pointer-events: none;
+            z-index: -1;
+            background: black; /* фон теперь тут */
         }
     </style>
 </head>
@@ -448,7 +447,9 @@
     <canvas id="bg-canvas"></canvas>
     <!-- Хедер -->
     <header>
-        <img class="sg-logo" src="Group 84.png" alt="SafeGames"> <!-- твой логотип платформы -->
+        <a href="https://www.safe-games.ru">
+            <img class="sg-logo" src="../../SafeGamesLogo.png" alt="SafeGames"> <!-- твой логотип платформы -->
+        </a>
     </header>
 
     <!-- Герой -->
@@ -679,39 +680,50 @@
         let w = canvas.width = window.innerWidth;
         let h = canvas.height = window.innerHeight;
 
-        window.addEventListener('resize', () => {
+        function resizeCanvas() {
             w = canvas.width = window.innerWidth;
             h = canvas.height = window.innerHeight;
-        });
-
-        // Частицы / пиксели
-        const particles = [];
-        for (let i = 0; i < 300; i++) {
-            particles.push({
-                x: Math.random() * w,
-                y: Math.random() * h,
-                size: Math.random() * 4 + 1,
-                speedY: Math.random() * 1.5 + 0.5,
-                color: `rgba(112,43,255,${Math.random() * 0.5 + 0.2})`
-            });
         }
 
-        // Неоновый дождь
-        const neonDrops = [];
-        for (let i = 0; i < 300; i++) {
-            neonDrops.push({
-                x: Math.random() * w,
-                y: Math.random() * h,
-                length: Math.random() * 20 + 10,
-                speedY: Math.random() * 4 + 2,
-                color: `rgba(112,43,255,${Math.random() * 0.5 + 0.2})`
-            });
+        // ===== Проверка маленького экрана =====
+        function isSmallScreen(threshold = 768) {
+            return Math.min(window.innerWidth, window.innerHeight) <= threshold;
         }
 
-        // Массив молний
+        // ===== Состояние эффектов =====
+        let effectsEnabled = false;
+        let particles = [];
+        let neonDrops = [];
         let lightning = [];
+        let lightningTimer = null;
+        let animationFrame = null;
 
-        // Функция для создания ветвящейся молнии
+        // ===== Генерация частиц и дождя =====
+        function initEffects() {
+            particles = [];
+            for (let i = 0; i < 300; i++) {
+                particles.push({
+                    x: Math.random() * w,
+                    y: Math.random() * h,
+                    size: Math.random() * 4 + 1,
+                    speedY: Math.random() * 1.5 + 0.5,
+                    color: `rgba(112,43,255,${Math.random() * 0.5 + 0.2})`
+                });
+            }
+
+            neonDrops = [];
+            for (let i = 0; i < 400; i++) {
+                neonDrops.push({
+                    x: Math.random() * w,
+                    y: Math.random() * h,
+                    length: Math.random() * 20 + 10,
+                    speedY: Math.random() * 4 + 2,
+                    color: `rgba(112,43,255,${Math.random() * 0.5 + 0.2})`
+                });
+            }
+        }
+
+        // ===== Молнии =====
         function createBranch(x, y, depth = 0) {
             const segments = [];
             const segmentCount = Math.floor(Math.random() * 5 + 5);
@@ -719,19 +731,17 @@
             let currentY = y;
 
             for (let i = 0; i < segmentCount; i++) {
-                const nextX = currentX + (Math.random() * 40 - 20);
-                const nextY = currentY + (Math.random() * 30 + 20);
+                const nextX = currentX + (Math.random() * 80 - 40);
+                const nextY = currentY + (Math.random() * 30 + 30);
                 segments.push({ x1: currentX, y1: currentY, x2: nextX, y2: nextY });
                 currentX = nextX;
                 currentY = nextY;
 
-                // Рандомно создаем подветвления
                 if (depth < 2 && Math.random() < 0.3) {
                     const branch = createBranch(currentX, currentY, depth + 1);
                     segments.push(...branch);
                 }
             }
-
             return segments;
         }
 
@@ -742,14 +752,22 @@
             lightning.push({ segments, alpha: 1 });
         }
 
-        // Создаём молнию каждые ~30 секунд
-        setInterval(() => {
-            createLightning();
-        }, 300 + Math.random() * 500);
+        function startLightningTimer() {
+            if (lightningTimer) clearTimeout(lightningTimer);
+            lightningTimer = setTimeout(() => {
+                createLightning();
+                startLightningTimer();
+            }, 500 + Math.random() * 500);
+        }
+
+        function stopLightningTimer() {
+            if (lightningTimer) clearTimeout(lightningTimer);
+            lightningTimer = null;
+        }
 
         function drawLightning() {
             lightning.forEach((bolt, index) => {
-                ctx.strokeStyle = `rgba(112,43,255,${bolt.alpha})`; // фиолетовый
+                ctx.strokeStyle = `rgba(112,43,255,${bolt.alpha})`;
                 ctx.lineWidth = 2;
                 ctx.beginPath();
                 bolt.segments.forEach(seg => {
@@ -758,15 +776,15 @@
                 });
                 ctx.stroke();
 
-                bolt.alpha -= 0.03; // постепенно исчезаем
+                bolt.alpha -= 0.03;
                 if (bolt.alpha <= 0) lightning.splice(index, 1);
             });
         }
 
+        // ===== Анимация =====
         function animate() {
             ctx.clearRect(0, 0, w, h);
 
-            // Пиксели
             particles.forEach(p => {
                 ctx.fillStyle = p.color;
                 ctx.fillRect(p.x, p.y, p.size, p.size);
@@ -774,7 +792,6 @@
                 if (p.y > h) p.y = -p.size;
             });
 
-            // Неоновый дождь
             neonDrops.forEach(d => {
                 ctx.strokeStyle = d.color;
                 ctx.lineWidth = 2;
@@ -786,12 +803,53 @@
                 if (d.y > h) d.y = -d.length;
             });
 
-            // Молнии
             drawLightning();
 
-            requestAnimationFrame(animate);
+            animationFrame = requestAnimationFrame(animate);
         }
-        animate();
+
+        // ===== Управление эффектами =====
+        function enableEffects() {
+            if (effectsEnabled) return;
+            effectsEnabled = true;
+            resizeCanvas();
+            initEffects();
+            startLightningTimer();
+            animate();
+        }
+
+        function disableEffects() {
+            if (!effectsEnabled) return;
+            effectsEnabled = false;
+            stopLightningTimer();
+            cancelAnimationFrame(animationFrame);
+            ctx.clearRect(0, 0, w, h);
+        }
+
+        function updateEffects() {
+            if (isSmallScreen()) {
+                disableEffects();
+            } else {
+                enableEffects();
+            }
+        }
+
+        // ===== Обработчики =====
+        window.addEventListener('resize', () => {
+            resizeCanvas();
+            updateEffects();
+        });
+
+        document.addEventListener('visibilitychange', () => {
+            if (document.hidden) {
+                disableEffects();
+            } else {
+                updateEffects();
+            }
+        });
+
+        // ===== Запуск =====
+        updateEffects();
     </script>
 </body>
 </html>
