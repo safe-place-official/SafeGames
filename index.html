@@ -416,17 +416,77 @@
                 right: -80px;
             }
 
-            /* Наведение — фирменный градиент и подсветка */
-            .carousel-nav:hover {
-                background: linear-gradient(135deg, var(--purple), var(--dark-purple));
-                box-shadow: 0 0 20px var(--purple), 0 0 5px rgba(112, 43, 255, 0.6);
+        @media (min-width: 500px) {
+            .carousel-nav {
+                width: 3vw;
             }
 
-            /* Эффект при нажатии */
-            .carousel-nav:active {
-                transform: scale(0.95);
-                box-shadow: 0 0 10px var(--purple);
+                .carousel-nav.prev {
+                    left: -50px;
+                }
+
+                .carousel-nav.next {
+                    right: -50px;
+                }
+        }
+
+        /* 1920px — FullHD */
+        @media (min-width: 1000px) and (max-width: 1899px) {
+            .carousel-nav {
+                width: 40px;
             }
+
+                .carousel-nav.prev {
+                    left: -65px;
+                }
+
+                .carousel-nav.next {
+                    right: -65px;
+                }
+        }
+
+
+        @media (min-width: 1900px) and (max-width: 2499px) {
+            .carousel-nav {
+                width: 2.7vw;
+            }
+
+                .carousel-nav.prev {
+                    left: -80px;
+                }
+
+                .carousel-nav.next {
+                    right: -80px;
+                }
+        }
+
+
+        @media (min-width: 2500px) {
+            .carousel-nav {
+                width: 2.7vw;
+            }
+
+                .carousel-nav.prev {
+                    left: 0px;
+                }
+
+                .carousel-nav.next {
+                    right: 0px;
+                }
+        }
+
+
+        /* Наведение — фирменный градиент и подсветка */
+        .carousel-nav:hover {
+            background: linear-gradient(135deg, var(--purple), var(--dark-purple));
+            box-shadow: 0 0 20px var(--purple), 0 0 5px rgba(112, 43, 255, 0.6);
+        }
+
+        /* Эффект при нажатии */
+        .carousel-nav:active {
+            transform: scale(0.95);
+            box-shadow: 0 0 10px var(--purple);
+        }
 
 
         .carousel-slide .play-btn {
