@@ -126,34 +126,42 @@
             bottom: 5px;
             background-color: var(--dark-purple);
             padding: 15px 0;
-            transition: all 0.3s ease;
+            transition: transform 0.3s ease; /* Указываем только transform */
             overflow-y: auto;
             z-index: 999;
             box-shadow: 4px 0 15px rgba(112, 43, 255, 0.5);
             border-bottom-right-radius: 10px;
-            overflow: auto;
+            will-change: transform; /* Подсказка браузеру */
             scrollbar-width: none;
             -ms-overflow-style: none;
         }
 
+            .sidebar.collapsed {
+                transform: translateX(-280px); /* Уточняем, что анимируем только transform */
+            }
+
         @media (max-width: 768px) {
             .sidebar {
-                width: 250px;
                 transform: translateX(-100%);
+                transition: transform 0.3s ease; /* Только transform */
+                will-change: transform;
             }
 
                 .sidebar:not(.collapsed) {
                     transform: translateX(0);
                 }
+        }
 
-            .main-content {
-                margin-left: 0 !important;
+        .main-content {
+            margin-left: 300px;
+            padding: 60px 20px 20px;
+            transition: margin-left 0.3s ease; /* Только margin-left */
+            will-change: margin-left;
+        }
+
+            .main-content.collapsed {
+                margin-left: 20px;
             }
-        }
-
-        .sidebar.collapsed {
-            left: -280px;
-        }
 
         .sidebar button {
             display: flex;
@@ -222,21 +230,10 @@
             margin-right: 10px;
         }
 
-        /* Основной контент */
-        .main-content {
-            margin-left: 300px;
-            padding: 60px 20px 20px;
-            transition: margin-left 0.3s;
-        }
-
         @media (max-width: 768px) {
             .main-content {
                 padding: 60px 10px 10px;
             }
-        }
-
-        .main-content.collapsed {
-            margin-left: 20px; /* Когда сайдбар свернут */
         }
 
         .featured-container {
@@ -699,6 +696,10 @@
                 padding: 5px 10px;
             }
         }
+        .sidebar-separator {
+            margin: 15px 0; /* Отступ сверху и снизу */
+        }
+
     </style>
 </head>
 <body>
@@ -716,18 +717,25 @@
         <button><i class="fas fa-code"></i><span>SafePlace Dev</span></button>
         <button><i class="fas fa-star"></i><span>Новинки</span></button>
         <button><i class="fas fa-fire"></i><span>Популярные</span></button>
-        <button><i class="fas fa-car"></i><span>Симуляторы</span></button>
-        <button><i class="fas fa-gamepad"></i><span>Аркады</span></button>
-        <button><i class="fas fa-ghost"></i><span>Хоррор</span></button>
-        <button><i class="fas fa-chess"></i><span>Стратегии</span></button>
-        <button><i class="fas fa-shield-alt"></i><span>Выживание</span></button>
-        <button><i class="fas fa-puzzle-piece"></i><span>Головоломки</span></button>
-        <button><i class="fas fa-book"></i><span>Новеллы</span></button>
-        <button><i class="fas fa-map"></i><span>Метроидвании</span></button>
+        <div class="sidebar-separator"></div>
         <button><i class="fas fa-dragon"></i><span>RPG</span></button>
         <button><i class="fas fa-running"></i><span>Экшн</span></button>
         <button><i class="fas fa-mountain"></i><span>Приключения</span></button>
+        <button><i class="fas fa-car"></i><span>Симуляторы</span></button>
         <button><i class="fas fa-football-ball"></i><span>Спортивные</span></button>
+        <button><i class="fas fa-chess"></i><span>Стратегии</span></button>
+        <button><i class="fas fa-shield-alt"></i><span>Выживание</span></button>
+        <button><i class="fas fa-ghost"></i><span>Хоррор</span></button>
+        <button><i class="fas fa-puzzle-piece"></i><span>Головоломки</span></button>
+        <button><i class="fas fa-book"></i><span>Новеллы</span></button>
+        <button><i class="fas fa-map"></i><span>Метроидвании</span></button>
+        <button><i class="fas fa-space-shuttle"></i><span>Sci-Fi</span></button>
+        <button><i class="fas fa-hat-wizard"></i><span>Фэнтези</span></button>
+        <button><i class="fas fa-bolt"></i><span>Платформеры</span></button>
+        <button><i class="fas fa-fist-raised"></i><span>Файтинг</span></button>
+        <button><i class="fas fa-dice"></i><span>Настольные</span></button>
+        <button><i class="fas fa-users"></i><span>Онлайн</span></button>
+        <button><i class="fas fa-gamepad"></i><span>Аркады</span></button>
         <div style="text-align: center; padding: 20px; color: var(--white); font-size: 12px; margin-top: auto;">
             SafeGames<br>
             Все права защищены © 2025
