@@ -32,7 +32,7 @@
             box-shadow: 0 4px 12px rgba(112, 43, 255, 0.3);
             position: relative;
             overflow: hidden;
-            z-index: 1;
+            z-index: 1001;
         }
 
             .toggle-btn i {
@@ -120,7 +120,7 @@
         /* Сайдбар */
         .sidebar {
             position: fixed;
-            left: 0;
+            left: -280px;
             top: 52px;
             width: 280px;
             bottom: 5px;
@@ -136,23 +136,14 @@
             -ms-overflow-style: none;
         }
 
+            .sidebar.show {
+                left: 0;
+            }
+
         @media (max-width: 768px) {
             .sidebar {
                 width: 250px;
-                transform: translateX(-100%);
             }
-
-                .sidebar:not(.collapsed) {
-                    transform: translateX(0);
-                }
-
-            .main-content {
-                margin-left: 0 !important;
-            }
-        }
-
-        .sidebar.collapsed {
-            left: -280px;
         }
 
         .sidebar button {
@@ -224,7 +215,6 @@
 
         /* Основной контент */
         .main-content {
-            margin-left: 300px;
             padding: 60px 20px 20px;
             transition: margin-left 0.3s;
         }
@@ -233,10 +223,6 @@
             .main-content {
                 padding: 60px 10px 10px;
             }
-        }
-
-        .main-content.collapsed {
-            margin-left: 20px; /* Когда сайдбар свернут */
         }
 
         .featured-container {
@@ -699,16 +685,16 @@
                 padding: 5px 10px;
             }
         }
+
         .sidebar-separator {
             margin: 15px 0; /* Отступ сверху и снизу */
         }
-
     </style>
 </head>
 <body>
     <header>
         <button class="toggle-btn" onclick="toggleSidebar()" title="Меню">
-            <i class="fas fa-chevron-left"></i>
+            <i class="fas fa-chevron-right"></i>
         </button>
         <a href="https://www.safe-games.ru">
             <img src="SafeGamesLogo.png" alt="SafeGames" class="logo">
@@ -823,27 +809,29 @@
     </main>
 
     <script>
-
-        document.addEventListener("DOMContentLoaded", () => {
-            const sidebar = document.querySelector(".sidebar");
-            const mainContent = document.querySelector(".main-content");
-            const toggleBtn = document.querySelector(".toggle-btn i");
-
-            // Автозакрытие меню на мобильных
-            if (window.innerWidth <= 768) {
-                sidebar.classList.add("collapsed");
-                mainContent.classList.add("collapsed");
-                toggleBtn.classList.remove("fa-chevron-left");
-                toggleBtn.classList.add("fa-chevron-right");
-            }
-        });
-
         // Функция сворачивания/разворачивания сайдбара
         function toggleSidebar() {
             const sidebar = document.querySelector('.sidebar');
-            const main = document.querySelector('.main-content');
-            sidebar.classList.toggle('collapsed');
-            main.classList.toggle('collapsed');
+            const toggleBtn = document.querySelector('.toggle-btn');
+
+            // Анимация кнопки
+            toggleBtn.classList.add('clicked');
+            setTimeout(() => {
+                toggleBtn.classList.remove('clicked');
+            }, 400);
+
+            // Переключение сайдбара
+            sidebar.classList.toggle('show');
+
+            // Смена иконки
+            const icon = toggleBtn.querySelector('i');
+            if (sidebar.classList.contains('show')) {
+                icon.classList.remove('fa-chevron-right');
+                icon.classList.add('fa-chevron-left');
+            } else {
+                icon.classList.remove('fa-chevron-left');
+                icon.classList.add('fa-chevron-right');
+            }
         }
 
         // Пример рандомных игр (хардкодим список названий)
@@ -980,32 +968,6 @@
                 slideInterval = setInterval(nextSlide, 10000);
             });
         });
-
-        function toggleSidebar() {
-            const sidebar = document.querySelector('.sidebar');
-            const main = document.querySelector('.main-content');
-            const toggleBtn = document.querySelector('.toggle-btn');
-
-            // Анимация кнопки
-            toggleBtn.classList.add('clicked');
-            setTimeout(() => {
-                toggleBtn.classList.remove('clicked');
-            }, 400);
-
-            // Переключение сайдбара
-            sidebar.classList.toggle('collapsed');
-            main.classList.toggle('collapsed');
-
-            // Смена иконки
-            const icon = toggleBtn.querySelector('i');
-            if (sidebar.classList.contains('collapsed')) {
-                icon.classList.remove('fa-chevron-left');
-                icon.classList.add('fa-chevron-right');
-            } else {
-                icon.classList.remove('fa-chevron-right');
-                icon.classList.add('fa-chevron-left');
-            }
-        }
     </script>
 </body>
 </html>
