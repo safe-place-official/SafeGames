@@ -612,9 +612,9 @@
                     card.href = game.link;
                     card.className = "game-card";
                     card.innerHTML = `
-                    <div class="game-cover" style="background-image:url('${game.cover}')"></div>
-                    <div class="game-title">${game.title}</div>
-                  `;
+                        <div class="game-cover" style="background-image:url('${game.link}/${game.cover}')"></div>
+                        <div class="game-title">${game.title}</div>
+                      `;
                     gamesContainer.appendChild(card);
                 });
 

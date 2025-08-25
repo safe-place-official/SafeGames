@@ -23,24 +23,14 @@
   ],
   "games": [
     {
-      "title": "DroneDelivery",
-      "cover": "image 5.png",
-      "link": "drone.html"
-    },
-    {
       "title": "Rocket Simulator",
-      "cover": "image 1.png",
-      "link": "rocket.html"
-    },
-    {
-      "title": "Дуров, побег из тюрьмы",
-      "cover": "maxresdefault 1.png",
-      "link": "durov.html"
+      "cover": "horizontal-cover.png",
+      "link": "RocketSimulator"
     },
     {
       "title": "Крестики нолики 2.0",
-      "cover": "Group 87.png",
-      "link": "tictoe.html"
+      "cover": "horizontal-cover.png",
+      "link": "TicTacToe"
     }
   ]
 }
