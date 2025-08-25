@@ -573,8 +573,17 @@
                 const gameData = await response.json();
 
                 if (gameData.title) {
-                    document.title = `SafeGames — ${gameData.title}`;
+                    document.title = `SafeGames | ${gameData.title}`;
                 }
+
+                //Фавиконка
+                let favicon = document.querySelector('link[rel="icon"]');
+                if (!favicon) {
+                    favicon = document.createElement('link');
+                    favicon.rel = 'icon';
+                    document.head.appendChild(favicon);
+                }
+                favicon.href = gameData.logo;
 
                 // Логотип и фон
                 const logoEl = document.querySelector('.game-logo');

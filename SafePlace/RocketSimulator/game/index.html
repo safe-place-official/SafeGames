@@ -3,9 +3,8 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-    <title>SafeGames | Durov, Jailbreak</title>
-    <link rel="shortcut icon" href="TemplateData/1.webp">
-    <link rel="stylesheet" href="TemplateData/style.css">
+    <title></title>
+    <link rel="shortcut icon" href="">
     <link href="https://fonts.googleapis.com/css2?family=Rubik:ital,wght@1,900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
@@ -119,6 +118,7 @@
             color: inherit; /* наследует цвет родителя */
             cursor: pointer; /* меняет курсор на руку при наведении */
         }
+
         #unity-frame {
             flex: 1;
             border: none;
@@ -157,6 +157,38 @@
             }
         }
 
+
+        async function loadGameData() {
+            try {
+                const response = await fetch('../game-data.json');
+                if (!response.ok) throw new Error('Не удалось загрузить данные');
+
+                const gameData = await response.json();
+
+                if (gameData.title) {
+                    document.title = `SafeGames | ${gameData.title}`;
+                }
+
+                let favicon = document.querySelector('link[rel="icon"]');
+                if (!favicon) {
+                    favicon = document.createElement('link');
+                    favicon.rel = 'icon';
+                    document.head.appendChild(favicon);
+                }
+
+                favicon.href = `../${gameData.logo}`;
+
+                // Текст
+                const titleEl = document.querySelector('.text-link');
+                if (gameData.title) titleEl.textContent = gameData.title;
+
+            }
+
+            catch (err) {
+                console.error('Ошибка загрузки данных:', err);
+            }
+        }
+        loadGameData();
     </script>
 </body>
 </html>
