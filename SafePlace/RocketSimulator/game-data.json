@@ -1,0 +1,34 @@
+﻿{
+  "title": "Rocket Simulator",
+  "description": "Rocket Simulator - это игра-симулятор, в которой вы сможете построить свою собственную ракету и отправиться в космическое путешествие. Во время полета вам придется избегать столкновений с метеоритами и собирать монеты по пути.",
+  "logo": "logo.png",
+  "background": "horizontal-cover.png",
+  "releaseDate": "27 августа 2024",
+  "developer": "SafePlace",
+  "rating": 4,
+  "tags": [ "Инди", "Симуляторы" ],
+  "screenshots": [
+    "./screenshots/1.png",
+    "./screenshots/2.png",
+    "./screenshots/3.png"
+  ],
+  "stores": [
+    {
+      "name": "YG",
+      "icon": "fas fa-gamepad",
+      "url": "https://yandex.ru/games/app/358275?lang=ru"
+    },
+    {
+      "name": "Itch",
+      "icon": "fa-brands fa-itch-io",
+      "url": "https://safeplace.itch.io/rocketsimulator"
+    },
+    {
+      "name": "RuStore",
+      "icon": "fas fa-store",
+      "url": "https://www.rustore.ru/catalog/app/com.SafePlace.RocketSimulator"
+    }
+  ],
+  "requirements": [ "Поддержка HTML5", "RAM: 1 GB", "GPU: Встроенный", "Место на диске: не требуется" ],
+  "support": ["Версия: Beta 0.0.0", "Ориентация: Альбомная", "Локализация: RU / EN", "Платформы: Web, Android" ]
+}
