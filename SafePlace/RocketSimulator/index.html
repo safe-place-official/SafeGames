@@ -79,7 +79,6 @@
             margin: clamp(50px, 8vh, 70px) auto 0 auto;
             width: min(90%, 1200px);
             position: relative;
-
             border-left: 2px solid var(--purple);
             border-right: 2px solid var(--purple);
             border-bottom: 2px solid var(--purple);
@@ -549,73 +548,66 @@
 
         document.getElementById('play').addEventListener('click', startGame);
 
-        document.getElementById('share').addEventListener('click', async () => {
-            const shareData = {
-                title: 'PEAK — SafeGames',
-                text: 'Загляни в PEAK на SafeGames',
-                url: window.location.href
-            };
-            if (navigator.share) {
-                try { await navigator.share(shareData); } catch (e) { }
-            } else {
-                await navigator.clipboard.writeText(shareData.url);
-                const btn = document.getElementById('share');
-                btn.innerHTML = '<i class="fa-solid fa-check"></i> Ссылка скопирована';
-                setTimeout(() => btn.innerHTML = '<i class="fa-solid fa-share-nodes"></i> Поделиться', 1200);
-            }
-        });
+        let gameData = {}; // глобальная переменная для использования в share
 
         async function loadGameData() {
             try {
                 const response = await fetch('game-data.json');
                 if (!response.ok) throw new Error('Не удалось загрузить данные');
 
-                const gameData = await response.json();
+                gameData = await response.json();
 
+                // ===== Заголовок страницы =====
                 if (gameData.title) {
                     document.title = `SafeGames | ${gameData.title}`;
                 }
 
-                //Фавиконка
+                // ===== Фавиконка =====
                 let favicon = document.querySelector('link[rel="icon"]');
                 if (!favicon) {
                     favicon = document.createElement('link');
                     favicon.rel = 'icon';
                     document.head.appendChild(favicon);
                 }
-                favicon.href = gameData.logo;
+                favicon.href = gameData.logo || '';
 
-                // Логотип и фон
+                // ===== Логотип и фон =====
                 const logoEl = document.querySelector('.game-logo');
                 const bgEl = document.querySelector('.hero__bg');
                 if (gameData.logo) logoEl.style.backgroundImage = `url(${gameData.logo})`;
                 if (gameData.background) bgEl.style.backgroundImage = `url(${gameData.background})`;
 
-                // Текст
+                // ===== Название =====
                 const titleEl = document.querySelector('.game-title');
-                const descEl = document.querySelector('.desc');
                 if (gameData.title) titleEl.textContent = gameData.title;
-                if (gameData.description) descEl.textContent = gameData.description;
-                else descEl.closest('section').style.display = 'none'; // скрыть блок описания
 
-                // Meta-бейджи
+                // ===== Описание =====
+                const descEl = document.querySelector('.desc');
+                if (gameData.description) {
+                    descEl.textContent = gameData.description;
+                } else {
+                    descEl.previousElementSibling.style.display = 'none'; // h2
+                    descEl.style.display = 'none';
+                }
+
+                // ===== Meta-бейджи =====
                 const badges = document.querySelectorAll('.meta-row .badge');
-                if (gameData.releaseDate) badges[0].innerHTML = `<i class="fa-solid fa-calendar-day"></i> Релиз: ${gameData.releaseDate}`;
+                if (gameData.releaseDate)
+                    badges[0].innerHTML = `<i class="fa-solid fa-calendar-day"></i> Релиз: ${gameData.releaseDate}`;
                 else badges[0].style.display = 'none';
 
-if (gameData.developer) 
-    badges[1].innerHTML = `<a href="../" style="color: inherit; text-decoration: none; display: inline-flex; gap:6px; align-items:center;">
-        <i class="fa-solid fa-user-gear"></i> Разработчик: ${gameData.developer}
-    </a>`;
-
-
+                if (gameData.developer)
+                    badges[1].innerHTML = `<a href="../" style="color: inherit; text-decoration: none; display: inline-flex; gap:6px; align-items:center;">
+                    <i class="fa-solid fa-user-gear"></i> Разработчик: ${gameData.developer}
+                </a>`;
+                else badges[1].style.display = 'none';
 
                 if (gameData.rating)
                     badges[2].innerHTML = `<i class="fa-solid fa-star"></i> Рейтинг: <span class="stars">${'★'.repeat(Math.floor(gameData.rating))}${'☆'.repeat(5 - Math.floor(gameData.rating))}</span> ${gameData.rating}`;
                 else badges[2].style.display = 'none';
 
-                // Теги
-                const chipsContainer = document.querySelector('.chips');
+                // ===== Категории =====
+                const chipsContainer = document.querySelectorAll('.card .chips')[0];
                 if (gameData.tags?.length) {
                     chipsContainer.innerHTML = '';
                     gameData.tags.forEach(tag => {
@@ -624,9 +616,12 @@ if (gameData.developer)
                         span.textContent = tag;
                         chipsContainer.appendChild(span);
                     });
-                } else chipsContainer.closest('section').style.display = 'none';
+                } else {
+                    chipsContainer.previousElementSibling.style.display = 'none';
+                    chipsContainer.style.display = 'none';
+                }
 
-                // Скриншоты
+                // ===== Скриншоты =====
                 const galleryEl = document.querySelector('.gallery');
                 if (gameData.screenshots?.length) {
                     galleryEl.innerHTML = '';
@@ -636,9 +631,12 @@ if (gameData.developer)
                         div.style.backgroundImage = `url(${src})`;
                         galleryEl.appendChild(div);
                     });
-                } else galleryEl.closest('section').style.display = 'none';
+                } else {
+                    galleryEl.previousElementSibling.style.display = 'none';
+                    galleryEl.style.display = 'none';
+                }
 
-                // Магазины
+                // ===== Магазины =====
                 const storesContainer = document.querySelector('.stores');
                 if (gameData.stores?.length) {
                     storesContainer.innerHTML = '';
@@ -651,9 +649,12 @@ if (gameData.developer)
                         a.innerHTML = `<i class="${store.icon}"></i><span>${store.name}</span>`;
                         storesContainer.appendChild(a);
                     });
-                } else storesContainer.closest('section').style.display = 'none';
+                } else {
+                    storesContainer.previousElementSibling.style.display = 'none';
+                    storesContainer.style.display = 'none';
+                }
 
-                // Требования
+                // ===== Требования =====
                 const requirementsContainer = document.querySelectorAll('.card .chips')[1];
                 if (gameData.requirements?.length) {
                     requirementsContainer.innerHTML = '';
@@ -663,9 +664,12 @@ if (gameData.developer)
                         span.textContent = req;
                         requirementsContainer.appendChild(span);
                     });
-                } else requirementsContainer.closest('section').style.display = 'none';
+                } else {
+                    requirementsContainer.previousElementSibling.style.display = 'none';
+                    requirementsContainer.style.display = 'none';
+                }
 
-                // Справка / support
+                // ===== Доп. информация =====
                 const supportContainer = document.querySelectorAll('.card .chips')[2];
                 if (gameData.support?.length) {
                     supportContainer.innerHTML = '';
@@ -675,16 +679,43 @@ if (gameData.developer)
                         span.textContent = info;
                         supportContainer.appendChild(span);
                     });
-                } else supportContainer.closest('section').style.display = 'none';
+                } else {
+                    supportContainer.previousElementSibling.style.display = 'none';
+                    supportContainer.style.display = 'none';
+                }
+
+                // ===== Подключаем кнопку share только после загрузки данных =====
+                initShare();
 
             } catch (err) {
                 console.error('Ошибка загрузки данных:', err);
             }
         }
 
-        // Запуск
+        function initShare() {
+            const btn = document.getElementById('share');
+            if (!btn) return;
+
+            btn.addEventListener('click', async () => {
+                const shareData = {
+                    title: `SafeGames | ${gameData.title || ''}`,
+                    text: '',
+                    url: window.location.href
+                };
+                if (navigator.share) {
+                    try { await navigator.share(shareData); } catch (e) { }
+                } else {
+                    await navigator.clipboard.writeText(shareData.url);
+                    btn.innerHTML = '<i class="fa-solid fa-check"></i> Ссылка скопирована';
+                    setTimeout(() => btn.innerHTML = '<i class="fa-solid fa-share-nodes"></i> Поделиться', 1200);
+                }
+            });
+        }
+
+        // Старт
         loadGameData();
     </script>
+
     <script>
         const canvas = document.getElementById('bg-canvas');
         const ctx = canvas.getContext('2d');

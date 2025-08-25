@@ -3,6 +3,7 @@
   "description": "Rocket Simulator - это игра-симулятор, в которой вы сможете построить свою собственную ракету и отправиться в космическое путешествие. Во время полета вам придется избегать столкновений с метеоритами и собирать монеты по пути.",
   "logo": "logo.png",
   "background": "horizontal-cover.png",
+  "vertical-background": "vertical-cover.png",
   "releaseDate": "27 августа 2024",
   "developer": "SafePlace",
   "rating": 4,
@@ -30,5 +31,5 @@
     }
   ],
   "requirements": [ "Поддержка HTML5", "RAM: 1 GB", "GPU: Встроенный", "Место на диске: не требуется" ],
-  "support": ["Версия: Beta 0.0.0", "Ориентация: Альбомная", "Локализация: RU / EN", "Платформы: Web, Android" ]
+  "support": [ "Версия: Beta 0.0.0", "Ориентация: Альбомная", "Локализация: RU / EN", "Платформы: Web, Android" ]
 }

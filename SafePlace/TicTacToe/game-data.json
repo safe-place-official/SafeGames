@@ -1,0 +1,15 @@
+﻿{
+  "title": "Крестики нолики 2.0",
+  "description": "Продолжение классической игры с новыми возможностями.",
+  "logo": "logo.png",
+  "background": "horizontal-cover.png",
+  "vertical-background": "vertical-cover.png",
+  "releaseDate": "18 июля 2024",
+  "developer": "SafePlace",
+  "rating": 4,
+  "tags": [ "Инди", "Стратегии" ],
+  "screenshots": [],
+  "stores": [],
+  "requirements": [ "Поддержка HTML5", "RAM: 1 GB", "GPU: Встроенный", "Место на диске: не требуется" ],
+  "support": [ "Версия: Beta 0.0.0", "Ориентация: Альбомная", "Локализация: RU / EN", "Платформы: Web" ]
+}
