@@ -314,24 +314,6 @@
             flex-direction: column;
         }
 
-        footer {
-            text-align: center;
-            font-size: 14px;
-            height: clamp(50px, 8vh, 70px);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 12px;
-            padding: 8px 16px;
-            background: var(--black);
-            border-left: 2px solid var(--purple);
-            border-right: 2px solid var(--purple);
-            border-top: 2px solid var(--purple);
-            border-top-left-radius: 12px;
-            border-top-right-radius: 12px;
-            z-index: 2;
-        }
-
         #bg-canvas {
             position: fixed;
             top: 0;
@@ -420,10 +402,6 @@
             <div class="games-grid" id="games-grid"></div>
         </main>
     </div>
-
-    <footer>
-        <p>SafeGames © 2025. Все права защищены.</p>
-    </footer>
     <script>
         const canvas = document.getElementById('bg-canvas');
         const ctx = canvas.getContext('2d');
