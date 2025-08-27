@@ -753,6 +753,34 @@
         .sidebar-separator {
             margin: 15px 0; /* Отступ сверху и снизу */
         }
+
+        .scroll-to-top {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--purple), var(--dark-purple));
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            opacity: 0;
+            transition: opacity 0.3s, transform 0.3s;
+            z-index: 999;
+            box-shadow: 0 4px 12px rgba(112, 43, 255, 0.4);
+        }
+
+            .scroll-to-top.visible {
+                opacity: 1;
+            }
+
+            .scroll-to-top:hover {
+                transform: translateY(-5px);
+                box-shadow: 0 6px 16px rgba(112, 43, 255, 0.6);
+            }
     </style>
 </head>
 <body>
@@ -870,6 +898,10 @@
         <section class="games-grid" id="games-grid">
             <!-- Игры будут добавлены JS -->
         </section>
+
+        <div class="scroll-to-top" id="scrollToTop">
+            <i class="fas fa-arrow-up"></i>
+        </div>
     </main>
 
     <script>
@@ -1031,6 +1063,29 @@
                 showSlide(index);
                 slideInterval = setInterval(nextSlide, 10000);
             });
+        });
+
+        function setupScrollToTop() {
+            const scrollButton = document.getElementById('scrollToTop');
+
+            window.addEventListener('scroll', () => {
+                if (window.pageYOffset > 300) {
+                    scrollButton.classList.add('visible');
+                } else {
+                    scrollButton.classList.remove('visible');
+                }
+            });
+
+            scrollButton.addEventListener('click', () => {
+                window.scrollTo({
+                    top: 0,
+                    behavior: 'smooth'
+                });
+            });
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            setupScrollToTop();
         });
     </script>
 </body>
