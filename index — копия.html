@@ -1,0 +1,698 @@
+﻿<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>RPG - SafeGames</title>
+    <link rel="icon" href="favicon.png" type="image/x-icon">
+    <link href="https://fonts.googleapis.com/css2?family=Rubik:ital,wght@1,900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* Основные цвета */
+        :root {
+            --white: #FFFFFF;
+            --purple: #702BFF;
+            --dark-purple: #3E1A88;
+            --black: #000000;
+        }
+
+        .toggle-btn {
+            background: linear-gradient(135deg, var(--purple), var(--dark-purple));
+            border: none;
+            color: var(--white);
+            cursor: pointer;
+            width: 40px;
+            height: 40px;
+            border-radius: 20%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 15px;
+            transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+            box-shadow: 0 4px 12px rgba(112, 43, 255, 0.3);
+            position: relative;
+            overflow: hidden;
+            z-index: 1001;
+        }
+
+            .toggle-btn i {
+                font-size: 18px;
+                transition: all 0.3s ease;
+            }
+
+            .toggle-btn::before {
+                content: '';
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: linear-gradient(135deg, var(--dark-purple), var(--purple));
+                opacity: 0;
+                transition: opacity 0.4s ease;
+                z-index: -1;
+            }
+
+            .toggle-btn:hover {
+                transform: translateY(-2px) scale(1.05);
+                box-shadow: 0 8px 20px rgba(112, 43, 255, 0.5);
+            }
+
+                .toggle-btn:hover::before {
+                    opacity: 1;
+                }
+
+            .toggle-btn:active {
+                transform: translateY(1px) scale(0.98);
+                box-shadow: 0 2px 8px rgba(112, 43, 255, 0.4);
+            }
+
+            /* Анимация иконки при нажатии */
+            .toggle-btn.clicked i {
+                animation: spin 0.4s ease;
+            }
+
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        body {
+            overflow-x: hidden;
+            margin: 0;
+            padding: 0;
+            background-color: var(--black);
+            color: var(--white);
+            font-family: 'Rubik', sans-serif;
+            font-weight: 900;
+            font-style: italic;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* Фон с пульсирующими драконами */
+        .background-icons {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            overflow: hidden;
+            pointer-events: none;
+        }
+
+        .dragon-icon {
+            position: absolute;
+            color: rgba(112, 43, 255, 0.15);
+            font-size: 40px;
+            opacity: 0;
+            animation: floatAndPulse 15s infinite ease-in-out;
+        }
+
+        @keyframes floatAndPulse {
+            0% {
+                transform: translate(0, 0) scale(0.8);
+                opacity: 0;
+            }
+
+            10% {
+                opacity: 0.5;
+            }
+
+            50% {
+                transform: translate(20px, -20px) scale(1.2);
+                opacity: 0.7;
+            }
+
+            100% {
+                transform: translate(40px, -40px) scale(0.8);
+                opacity: 0;
+            }
+        }
+
+        /* Хедер */
+        header {
+            display: flex;
+            align-items: center;
+            background-color: var(--black);
+            padding: 10px 20px;
+            position: fixed;
+            top: 0;
+            z-index: 1000;
+            height: clamp(50px, 8vh, 70px);
+            border: 0;
+            border-left: 2px solid #702BFF;
+            border-right: 2px solid #702BFF;
+            border-bottom: 2px solid #702BFF;
+            border-bottom-left-radius: 12px;
+            border-bottom-right-radius: 12px;
+            width: 100%;
+            box-sizing: border-box;
+            left: 0;
+            right: 0;
+        }
+
+        .sg-logo {
+            height: clamp(28px, 5vh, 40px);
+            width: auto;
+        }
+
+        /* Сайдбар */
+        .sidebar {
+            position: fixed;
+            left: -280px;
+            top: 52px;
+            width: 280px;
+            bottom: 5px;
+            background-color: var(--dark-purple);
+            padding: 15px 0;
+            transition: all 0.3s ease;
+            overflow-y: auto;
+            z-index: 999;
+            box-shadow: 4px 0 15px rgba(112, 43, 255, 0.5);
+            border-bottom-right-radius: 10px;
+            overflow: auto;
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+        }
+
+            .sidebar.show {
+                left: 0;
+            }
+
+        @media (max-width: 768px) {
+            .sidebar {
+                width: 250px;
+            }
+        }
+
+        .sidebar button {
+            display: flex;
+            align-items: center;
+            width: calc(100% - 20px);
+            padding: 12px 20px;
+            margin: 0 10px 5px;
+            background-color: var(--black);
+            border: none;
+            color: var(--white);
+            font-size: 16px;
+            font-family: 'Rubik', sans-serif;
+            font-weight: 900;
+            font-style: italic;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: left;
+            border-radius: 0 0 8px 0;
+            position: relative;
+            overflow: hidden;
+        }
+
+            .sidebar button::before {
+                content: '';
+                position: absolute;
+                left: 0;
+                top: 0;
+                width: 4px;
+                height: 100%;
+                background: var(--white);
+                transform: scaleY(0);
+                transform-origin: top;
+                transition: transform 0.3s ease;
+            }
+
+            .sidebar button:hover {
+                background-color: var(--black);
+                transform: translateX(5px);
+                box-shadow: 0 0 15px rgba(112, 43, 255, 0.7);
+            }
+
+                .sidebar button:hover::before {
+                    transform: scaleY(1);
+                }
+
+            .sidebar button span {
+                margin-left: 10px;
+            }
+
+            .sidebar button i {
+                font-size: 18px;
+                transition: all 0.3s ease;
+            }
+
+            .sidebar button:hover i {
+                transform: scale(1.2);
+                color: var(--purple);
+            }
+
+        .toggle-btn {
+            background-color: var(--purple);
+            border: none;
+            color: var(--white);
+            cursor: pointer;
+            padding: 5px;
+            margin-right: 10px;
+        }
+
+        /* Основной контент */
+        .main-content {
+            padding: 60px 20px 20px;
+            transition: margin-left 0.3s;
+        }
+
+        @media (max-width: 768px) {
+            .main-content {
+                padding: 60px 10px 10px;
+            }
+        }
+
+        .category-header {
+            text-align: center;
+            margin-bottom: 30px;
+            position: relative;
+            padding: 20px 0;
+        }
+
+        .category-title {
+            font-size: clamp(32px, 5vw, 48px);
+            color: var(--white);
+            margin: 0;
+            display: inline-block;
+            position: relative;
+            padding: 0 20px;
+        }
+
+            .category-title:before,
+            .category-title:after {
+                content: '';
+                position: absolute;
+                top: 50%;
+                width: 50px;
+                height: 3px;
+                background: linear-gradient(90deg, transparent, var(--purple));
+            }
+
+            .category-title:before {
+                left: -60px;
+                background: linear-gradient(90deg, var(--purple), transparent);
+            }
+
+            .category-title:after {
+                right: -60px;
+            }
+
+        .category-description {
+            max-width: 800px;
+            margin: 20px auto;
+            font-size: clamp(16px, 2.5vw, 20px);
+            line-height: 1.6;
+            text-align: center;
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        /* Сетка игр */
+        .games-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 20px;
+            grid-auto-flow: dense;
+        }
+
+        @media (max-width: 768px) {
+            .games-grid {
+                grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+                gap: 10px;
+            }
+
+            .game-title {
+                padding: 8px;
+                font-size: 14px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .games-grid {
+                grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+            }
+        }
+
+        .game-card {
+            background: linear-gradient(135deg, var(--dark-purple), #3E1A88);
+            border-radius: 12px;
+            overflow: hidden;
+            cursor: pointer;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+            position: relative;
+            border: 1px solid rgba(112, 43, 255, 0.2);
+        }
+
+            .game-card:before {
+                content: '';
+                position: absolute;
+                top: 0;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                background: linear-gradient(135deg, rgba(112, 43, 255, 0.3), transparent);
+                opacity: 0;
+                transition: opacity 0.4s ease;
+            }
+
+            .game-card:hover {
+                transform: translateY(-8px) scale(1.02);
+                box-shadow: 0 12px 28px rgba(112, 43, 255, 0.4);
+            }
+
+                .game-card:hover:before {
+                    opacity: 1;
+                }
+
+            .game-card:active {
+                transform: translateY(-2px);
+            }
+
+        .play-btn {
+            font-family: inherit;
+            font-weight: 900;
+            font-style: italic;
+            font-size: clamp(18px, 2.5vw, 24px);
+            padding: 12px 30px;
+            background: linear-gradient(135deg, var(--purple), #A36BFF);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            box-shadow: 0 4px 20px rgba(112, 43, 255, 0.5);
+            transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+        }
+
+            .play-btn:before {
+                content: '';
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: linear-gradient(135deg, #A36BFF, var(--purple));
+                z-index: -1;
+                opacity: 0;
+                transition: opacity 0.4s ease;
+            }
+
+            .play-btn:hover {
+                transform: translateY(-2px) scale(1.05);
+                box-shadow: 0 8px 25px rgba(112, 43, 255, 0.7);
+            }
+
+                .play-btn:hover:before {
+                    opacity: 1;
+                }
+
+            .play-btn:active {
+                transform: translateY(1px) scale(0.98);
+            }
+
+        .game-card.vertical {
+            grid-row: span 2;
+        }
+
+        .game-cover {
+            width: 100%;
+            background-color: #702BFF; /* Плейсхолдер с цветом темы */
+            flex-grow: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 40px;
+        }
+
+            .game-cover.horizontal {
+                aspect-ratio: 5 / 3;
+            }
+
+            .game-cover.vertical {
+                aspect-ratio: 5 / 3;
+            }
+
+        .game-title {
+            padding: 15px;
+            font-size: 16px;
+            background: rgba(0, 0, 0, 0.5);
+            margin-top: -4px;
+            transition: all 0.3s ease;
+        }
+
+        .game-card:hover .game-title {
+            background: rgba(0, 0, 0, 0.7);
+            color: var(--white);
+        }
+
+        .logo {
+            height: 40px;
+            width: auto;
+            object-fit: contain;
+        }
+
+        .sidebar-separator {
+            margin: 15px 0;
+        }
+
+        .scroll-to-top {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--purple), var(--dark-purple));
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            opacity: 0;
+            transition: opacity 0.3s, transform 0.3s;
+            z-index: 999;
+            box-shadow: 0 4px 12px rgba(112, 43, 255, 0.4);
+        }
+
+            .scroll-to-top.visible {
+                opacity: 1;
+            }
+
+            .scroll-to-top:hover {
+                transform: translateY(-5px);
+                box-shadow: 0 6px 16px rgba(112, 43, 255, 0.6);
+            }
+    </style>
+</head>
+<body>
+    <!-- Фон с пульсирующими драконами -->
+    <div class="background-icons" id="background-icons"></div>
+
+    <header>
+        <button class="toggle-btn" onclick="toggleSidebar()" title="Меню">
+            <i class="fas fa-chevron-right"></i>
+        </button>
+        <a href="https://www.safe-games.ru">
+            <img class="sg-logo" src="SafeGamesLogo.png" alt="SafeGames">
+        </a>
+    </header>
+
+    <nav class="sidebar">
+        <button onclick="window.location.href='index.html'"><i class="fas fa-home"></i><span>Главная</span></button>
+        <button onclick="window.location.href='SafePlace/'"><i class="fas fa-code"></i><span>SafePlace Dev</span></button>
+        <button><i class="fas fa-star"></i><span>Новинки</span></button>
+        <button><i class="fas fa-fire"></i><span>Популярные</span></button>
+        <div class="sidebar-separator"></div>
+        <button style="background-color: var(--purple);"><i class="fas fa-dragon"></i><span>RPG</span></button>
+        <button><i class="fas fa-running"></i><span>Экшн</span></button>
+        <button><i class="fas fa-mountain"></i><span>Приключения</span></button>
+        <button><i class="fas fa-car"></i><span>Симуляторы</span></button>
+        <button><i class="fas fa-football-ball"></i><span>Спортивные</span></button>
+        <button><i class="fas fa-chess"></i><span>Стратегии</span></button>
+        <button><i class="fas fa-shield-alt"></i><span>Выживание</span></button>
+        <button><i class="fas fa-ghost"></i><span>Хоррор</span></button>
+        <button><i class="fas fa-puzzle-piece"></i><span>Головоломки</span></button>
+        <button><i class="fas fa-book"></i><span>Новеллы</span></button>
+        <button><i class="fas fa-map"></i><span>Метроидвании</span></button>
+        <button><i class="fas fa-space-shuttle"></i><span>Sci-Fi</span></button>
+        <button><i class="fas fa-hat-wizard"></i><span>Фэнтези</span></button>
+        <button><i class="fas fa-bolt"></i><span>Платформеры</span></button>
+        <button><i class="fas fa-fist-raised"></i><span>Файтинг</span></button>
+        <button><i class="fas fa-dice"></i><span>Настольные</span></button>
+        <button><i class="fas fa-users"></i><span>Онлайн</span></button>
+        <button><i class="fas fa-gamepad"></i><span>Аркады</span></button>
+        <div style="text-align: center; padding: 20px; color: var(--white); font-size: 12px; margin-top: auto;">
+            SafeGames<br>
+            Все права защищены © 2025
+        </div>
+    </nav>
+
+    <main class="main-content">
+        <section class="category-header">
+            <h1 class="category-title"><i class="fas fa-dragon"></i> RPG</h1>
+            <p class="category-description">
+                Погрузитесь в эпические приключения, развивайте своих персонажей, исследуйте огромные миры
+                и принимайте решения, которые влияют на исход истории. От классических фэнтези до научной фантастики -
+                здесь вас ждут незабываемые ролевые игры.
+            </p>
+        </section>
+
+        <section class="games-grid" id="games-grid">
+            <!-- Игры будут добавлены JS -->
+        </section>
+
+        <div class="scroll-to-top" id="scrollToTop">
+            <i class="fas fa-arrow-up"></i>
+        </div>
+    </main>
+
+    <script>
+        // Функция сворачивания/разворачивания сайдбара
+        function toggleSidebar() {
+            const sidebar = document.querySelector('.sidebar');
+            const toggleBtn = document.querySelector('.toggle-btn');
+
+            // Анимация кнопки
+            toggleBtn.classList.add('clicked');
+            setTimeout(() => {
+                toggleBtn.classList.remove('clicked');
+            }, 400);
+
+            // Переключение сайдбара
+            sidebar.classList.toggle('show');
+
+            // Смена иконки
+            const icon = toggleBtn.querySelector('i');
+            if (sidebar.classList.contains('show')) {
+                icon.classList.remove('fa-chevron-right');
+                icon.classList.add('fa-chevron-left');
+            } else {
+                icon.classList.remove('fa-chevron-left');
+                icon.classList.add('fa-chevron-right');
+            }
+        }
+
+        // Создание фона с пульсирующими драконами
+        function createDragonBackground() {
+            const container = document.getElementById('background-icons');
+            const dragonCount = 15;
+
+            for (let i = 0; i < dragonCount; i++) {
+                const dragon = document.createElement('i');
+                dragon.classList.add('dragon-icon', 'fas', 'fa-dragon');
+
+                // Случайная позиция
+                const posX = Math.random() * 100;
+                const posY = Math.random() * 100;
+
+                dragon.style.left = `${posX}%`;
+                dragon.style.top = `${posY}%`;
+
+                // Случайная задержка анимации
+                const delay = Math.random() * 15;
+                dragon.style.animationDelay = `${delay}s`;
+
+                container.appendChild(dragon);
+            }
+        }
+
+        // Список RPG игр
+        const rpgGameTitles = [
+            'The Witcher 3: Wild Hunt',
+            'Cyberpunk 2077',
+            'Elder Scrolls V: Skyrim',
+            'Divinity: Original Sin 2',
+            'Baldur\'s Gate III',
+            'Dragon Age: Inquisition',
+            'Dark Souls III',
+            'Final Fantasy XV',
+            'Mass Effect: Legendary Edition',
+            'Path of Exile',
+            'Diablo IV',
+            'Genshin Impact',
+            'Monster Hunter: World',
+            'Star Wars: Knights of the Old Republic',
+            'Fallout 4',
+            'The Outer Worlds',
+            'Pillars of Eternity',
+            'Disco Elysium',
+            'Horizon Zero Dawn',
+            'Assassin\'s Creed Valhalla'
+        ];
+
+        // Функция для добавления игр в грид
+        function addGames(num) {
+            const grid = document.getElementById('games-grid');
+            for (let i = 0; i < num; i++) {
+                const randomTitle = rpgGameTitles[Math.floor(Math.random() * rpgGameTitles.length)];
+                const randomCoverType = Math.random() < 0.5 ? 'horizontal' : 'vertical';
+                const card = document.createElement('div');
+                card.classList.add('game-card', randomCoverType);
+
+                const cover = document.createElement('div');
+                cover.classList.add('game-cover', randomCoverType);
+                cover.innerHTML = '<i class="fas fa-dragon"></i>';
+
+                const title = document.createElement('div');
+                title.classList.add('game-title');
+                title.textContent = randomTitle;
+
+                card.appendChild(cover);
+                card.appendChild(title);
+                grid.appendChild(card);
+            }
+        }
+
+        // Начальная загрузка игр
+        addGames(50);
+
+        // Бесконечный скролл
+        window.addEventListener('scroll', () => {
+            if (window.innerHeight + window.scrollY >= document.body.offsetHeight - 500) {
+                addGames(10);
+            }
+        });
+
+        // Кнопка "Наверх"
+        function setupScrollToTop() {
+            const scrollButton = document.getElementById('scrollToTop');
+
+            window.addEventListener('scroll', () => {
+                if (window.pageYOffset > 300) {
+                    scrollButton.classList.add('visible');
+                } else {
+                    scrollButton.classList.remove('visible');
+                }
+            });
+
+            scrollButton.addEventListener('click', () => {
+                window.scrollTo({
+                    top: 0,
+                    behavior: 'smooth'
+                });
+            });
+        }
+
+        // Инициализация при загрузке
+        document.addEventListener('DOMContentLoaded', () => {
+            createDragonBackground();
+            setupScrollToTop();
+        });
+    </script>
+</body>
+</html>
