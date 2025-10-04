@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>RPG - SafeGames</title>
-    <link rel="icon" href="favicon.png" type="image/x-icon">
+    <title>SafeGames</title>
+    <link rel="icon" href="/favicon.png" type="image/x-icon">
     <link href="https://fonts.googleapis.com/css2?family=Rubik:ital,wght@1,900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
@@ -507,35 +507,36 @@
         <button class="toggle-btn" onclick="toggleSidebar()" title="Меню">
             <i class="fas fa-chevron-right"></i>
         </button>
-        <a href="https://www.safe-games.ru">
-            <img class="sg-logo" src="SafeGamesLogo.png" alt="SafeGames">
+        <a href="/">
+            <img class="sg-logo" src="/SafeGamesLogo.png" alt="SafeGames">
         </a>
     </header>
 
     <nav class="sidebar">
-        <button onclick="window.location.href='index.html'"><i class="fas fa-home"></i><span>Главная</span></button>
-        <button onclick="window.location.href='SafePlace/'"><i class="fas fa-code"></i><span>SafePlace Dev</span></button>
-        <button><i class="fas fa-star"></i><span>Новинки</span></button>
-        <button><i class="fas fa-fire"></i><span>Популярные</span></button>
+        <button onclick="window.location.href='/'"><i class="fas fa-home"></i><span>Главная</span></button>
+        <button onclick="window.location.href='/genres/?slug=new'"><i class="fas fa-star"></i><span>Новинки</span></button>
+        <button onclick="window.location.href='/developers/?slug=safeplace'"><i class="fas fa-code"></i><span>SafePlace Dev</span></button>
+
         <div class="sidebar-separator"></div>
-        <button style="background-color: var(--purple);"><i class="fas fa-dragon"></i><span>RPG</span></button>
-        <button><i class="fas fa-running"></i><span>Экшн</span></button>
-        <button><i class="fas fa-mountain"></i><span>Приключения</span></button>
-        <button><i class="fas fa-car"></i><span>Симуляторы</span></button>
-        <button><i class="fas fa-football-ball"></i><span>Спортивные</span></button>
-        <button><i class="fas fa-chess"></i><span>Стратегии</span></button>
-        <button><i class="fas fa-shield-alt"></i><span>Выживание</span></button>
-        <button><i class="fas fa-ghost"></i><span>Хоррор</span></button>
-        <button><i class="fas fa-puzzle-piece"></i><span>Головоломки</span></button>
-        <button><i class="fas fa-book"></i><span>Новеллы</span></button>
-        <button><i class="fas fa-map"></i><span>Метроидвании</span></button>
-        <button><i class="fas fa-space-shuttle"></i><span>Sci-Fi</span></button>
-        <button><i class="fas fa-hat-wizard"></i><span>Фэнтези</span></button>
-        <button><i class="fas fa-bolt"></i><span>Платформеры</span></button>
-        <button><i class="fas fa-fist-raised"></i><span>Файтинг</span></button>
-        <button><i class="fas fa-dice"></i><span>Настольные</span></button>
-        <button><i class="fas fa-users"></i><span>Онлайн</span></button>
-        <button><i class="fas fa-gamepad"></i><span>Аркады</span></button>
+
+        <button onclick="window.location.href='/genres/?slug=rpg'"><i class="fas fa-dragon"></i><span>RPG</span></button>
+        <button onclick="window.location.href='/genres/?slug=action'"><i class="fas fa-running"></i><span>Экшн</span></button>
+        <button onclick="window.location.href='/genres/?slug=adventure'"><i class="fas fa-mountain"></i><span>Приключения</span></button>
+        <button onclick="window.location.href='/genres/?slug=simulation'"><i class="fas fa-car"></i><span>Симуляторы</span></button>
+        <button onclick="window.location.href='/genres/?slug=sports'"><i class="fas fa-football-ball"></i><span>Спортивные</span></button>
+        <button onclick="window.location.href='/genres/?slug=strategy'"><i class="fas fa-chess"></i><span>Стратегии</span></button>
+        <button onclick="window.location.href='/genres/?slug=survival'"><i class="fas fa-shield-alt"></i><span>Выживание</span></button>
+        <button onclick="window.location.href='/genres/?slug=horror'"><i class="fas fa-ghost"></i><span>Хоррор</span></button>
+        <button onclick="window.location.href='/genres/?slug=puzzle'"><i class="fas fa-puzzle-piece"></i><span>Головоломки</span></button>
+        <button onclick="window.location.href='/genres/?slug=visual_novels'"><i class="fas fa-book"></i><span>Новеллы</span></button>
+        <button onclick="window.location.href='/genres/?slug=metroidvania'"><i class="fas fa-map"></i><span>Метроидвании</span></button>
+        <button onclick="window.location.href='/genres/?slug=sci_fi'"><i class="fas fa-space-shuttle"></i><span>Sci-Fi</span></button>
+        <button onclick="window.location.href='/genres/?slug=fantasy'"><i class="fas fa-hat-wizard"></i><span>Фэнтези</span></button>
+        <button onclick="window.location.href='/genres/?slug=platformer'"><i class="fas fa-bolt"></i><span>Платформеры</span></button>
+        <button onclick="window.location.href='/genres/?slug=fighting'"><i class="fas fa-fist-raised"></i><span>Файтинг</span></button>
+        <button onclick="window.location.href='/genres/?slug=board_games'"><i class="fas fa-dice"></i><span>Настольные</span></button>
+        <button onclick="window.location.href='/genres/?slug=online'"><i class="fas fa-users"></i><span>Онлайн</span></button>
+        <button onclick="window.location.href='/genres/?slug=arcade'"><i class="fas fa-gamepad"></i><span>Аркады</span></button>
         <div style="text-align: center; padding: 20px; color: var(--white); font-size: 12px; margin-top: auto;">
             SafeGames<br>
             Все права защищены © 2025
